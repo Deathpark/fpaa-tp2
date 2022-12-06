@@ -16,17 +16,19 @@ public class App {
         ArquivoLeitura arquivo = new ArquivoLeitura(NOME_ARQ);
 
         LinkedList<Rota> rotas = new LinkedList<>();
-        int quant = Integer.parseInt(arquivo.lerLinha()); // (int) (Math.random() * 20);
+        int quant = Integer.parseInt(arquivo.lerLinha());
+        System.out.println("Caminhões: " + quant);
         String linha = arquivo.lerLinha();
         while (linha != null) {
-            
+
             String[] dados = linha.split(";");
             rotas.add(new Rota(Integer.parseInt(dados[0]), Integer.parseInt(dados[1])));
             linha = arquivo.lerLinha();
         }
 
-        Backtracking b = new Backtracking();
+        Collections.sort(rotas, Collections.reverseOrder());
         int[] r = rotas.stream().mapToInt(rota -> (int) rota.getComprimento()).toArray();
+        Backtracking b = new Backtracking();
         System.out.println(b.distribuirRotas(r, quant));
         ProgDinamica p = new ProgDinamica();
         System.out.println(p.progDinamica(r, quant));

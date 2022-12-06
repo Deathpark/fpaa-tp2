@@ -6,7 +6,7 @@ public class Backtracking {
         long inicio = System.currentTimeMillis();
         backtracking(rotas, 0, quantCaminhoes, new int[quantCaminhoes]);
         long diferenca = System.currentTimeMillis() - inicio;
-        System.out.println(diferenca);
+        System.out.println("Tempo backtracking: " + diferenca);
         return res;
     }
 
