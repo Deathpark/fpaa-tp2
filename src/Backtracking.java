@@ -10,7 +10,7 @@ public class Backtracking {
         return res;
     }
 
-    private void backtracking(int[] rotas, int quant, int quantCaminhoes, int[] caminhoes) {
+    private void backtracking(int[] rotas, int quant, int totalCaminhoes, int[] caminhoes) {
         if (quant == rotas.length) {
             int max = 0;
             for (int caminhao : caminhoes)
@@ -18,9 +18,9 @@ public class Backtracking {
             res = Math.min(res, max);
             return;
         }
-        for (int i = 0; i < quantCaminhoes; i++) {
+        for (int i = 0; i < totalCaminhoes; i++) {
             caminhoes[i] += rotas[quant];
-            backtracking(rotas, quant + 1, quantCaminhoes, caminhoes);
+            backtracking(rotas, quant + 1, totalCaminhoes, caminhoes);
             caminhoes[i] -= rotas[quant];
         }
     }
