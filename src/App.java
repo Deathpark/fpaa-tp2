@@ -1,17 +1,30 @@
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class App {
+    static String NOME_ARQ = "./dados/caminhoes_compacto.txt";
 
     // Usando o caminhão com maior soma de rotas como diferença
     public static void main(String[] args) throws Exception {
+        ArquivoLeitura arquivo = new ArquivoLeitura(NOME_ARQ);
+
         LinkedList<Rota> rotas = new LinkedList<>();
-        int quant = 3; // (int) (Math.random() * 20);
-        for (int i = 0; i < 4; i++) {
-            rotas.add(new Rota(i, (i + 1) * 10));
+        int quant = Integer.parseInt(arquivo.lerLinha()); // (int) (Math.random() * 20);
+        String linha = arquivo.lerLinha();
+        while (linha != null) {
+            
+            String[] dados = linha.split(";");
+            rotas.add(new Rota(Integer.parseInt(dados[0]), Integer.parseInt(dados[1])));
+            linha = arquivo.lerLinha();
         }
+
         Backtracking b = new Backtracking();
         int[] r = rotas.stream().mapToInt(rota -> (int) rota.getComprimento()).toArray();
         System.out.println(b.distribuirRotas(r, quant));
@@ -32,20 +45,6 @@ public class App {
         Collections.sort(rotas);
         for (Rota rota : rotas) {
             Caminhao min = caminhoes.stream().min((c1, c2) -> c1.compareTo(c2)).get();
-            min.rotas.add(rota);
-        }
-        Caminhao max = caminhoes.stream().max((c1, c2) -> c1.compareTo(c2)).get();
-        System.out.println(max.getSoma());
-        return max.getSoma();
-    }
-
-    public static double progDinamica(List<Rota> rotas, List<Caminhao> caminhoes) {
-        rotas.sort((r1, r2) -> (int) ((r2.getComprimento() - r1.getComprimento()) * 100));
-
-        Caminhao[][][] tabela = new Caminhao[caminhoes.size()][rotas.size()][caminhoes.size()];
-        for (Rota rota : rotas) {
-            Caminhao min = caminhoes.stream().min((c1, c2) -> c1.compareTo(c2)).get();
-            System.out.println(min.getSoma());
             min.rotas.add(rota);
         }
         Caminhao max = caminhoes.stream().max((c1, c2) -> c1.compareTo(c2)).get();

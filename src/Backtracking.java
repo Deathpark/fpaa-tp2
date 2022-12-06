@@ -3,7 +3,10 @@ public class Backtracking {
     int res = Integer.MAX_VALUE;
 
     public int distribuirRotas(int[] rotas, int quantCaminhoes) {
+        long inicio = System.currentTimeMillis();
         backtracking(rotas, 0, quantCaminhoes, new int[quantCaminhoes]);
+        long diferenca = System.currentTimeMillis() - inicio;
+        System.out.println(diferenca);
         return res;
     }
 
