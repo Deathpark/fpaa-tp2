@@ -10,6 +10,7 @@ import java.util.List;
 
 public class App {
     static String NOME_ARQ = "./dados/caminhoes_compacto.txt";
+    static String NOME_ARQ_TEMP = "./dados/temperaturas.txt";
 
     // Usando o caminhão com maior soma de rotas como diferença
     public static void main(String[] args) throws Exception {
@@ -33,8 +34,10 @@ public class App {
         ProgDinamica p = new ProgDinamica();
         System.out.println(p.progDinamica(r, quant));
 
+        //divisaoConquista();
     }
 
+    
     public static LinkedList<Caminhao> novaListaCaminhoes(int quant) {
         LinkedList<Caminhao> caminhoes = new LinkedList<>();
         for (int i = 0; i < quant; i++) {
@@ -42,7 +45,7 @@ public class App {
         }
         return caminhoes;
     }
-
+    
     public static double algGuloso(List<Rota> rotas, List<Caminhao> caminhoes) {
         Collections.sort(rotas);
         for (Rota rota : rotas) {
@@ -53,5 +56,37 @@ public class App {
         System.out.println(max.getSoma());
         return max.getSoma();
     }
+    
+    private static void divisaoConquista() {
+        ArquivoLeitura arquivo = new ArquivoLeitura(NOME_ARQ_TEMP);
 
+        LinkedList<LinkedList<Integer>> temperaturas = new LinkedList<>();
+        String linha = arquivo.lerLinha();
+        while (linha != null) {
+            LinkedList<Integer> temp = new LinkedList<>();
+            String[] dados = linha.split(";");
+
+            for(int i = 0; i < dados.length; i++) {
+                temp.add(Integer.parseInt(dados[i]));
+            }
+
+            temperaturas.add(temp);
+
+            linha = arquivo.lerLinha();
+        }
+
+        temperaturas.stream().forEach((temperaturaAnual) -> {
+            double media = 0, soma = 0;
+
+            for(Integer temperatura : temperaturaAnual) {
+                soma += temperatura;
+            }
+
+            media = soma/temperaturaAnual.size();
+
+            DivisaoConquista divisaoConquista = new DivisaoConquista(temperaturaAnual);
+
+            divisaoConquista.maiorSomaDeTemperaturas(temperaturaAnual, 0, temperaturaAnual.size());
+        });
+    }
 }
