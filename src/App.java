@@ -34,7 +34,7 @@ public class App {
         ProgDinamica p = new ProgDinamica();
         System.out.println(p.progDinamica(r, quant));
 
-        //divisaoConquista();
+        divisaoConquista();
     }
 
     
@@ -76,17 +76,17 @@ public class App {
         }
 
         temperaturas.stream().forEach((temperaturaAnual) -> {
-            double media = 0, soma = 0;
 
-            for(Integer temperatura : temperaturaAnual) {
-                soma += temperatura;
+            // Criação de lista de diferenças
+            LinkedList<Integer> listaDiferencas = new LinkedList<>();
+            for(int i = 0; i < (temperaturaAnual.size()-1); i++) {
+                listaDiferencas.add(temperaturaAnual.get(i+1) - temperaturaAnual.get(i));
             }
 
-            media = soma/temperaturaAnual.size();
+            DivisaoConquista divisaoConquista = new DivisaoConquista(listaDiferencas);
 
-            DivisaoConquista divisaoConquista = new DivisaoConquista(temperaturaAnual);
-
-            divisaoConquista.maiorSomaDeTemperaturas(temperaturaAnual, 0, temperaturaAnual.size());
+            int resultado = divisaoConquista.maiorSomaDeTemperaturas(listaDiferencas, 0, listaDiferencas.size()-1);
+            System.out.println("Período que somou: " + resultado + " graus.");
         });
     }
 }

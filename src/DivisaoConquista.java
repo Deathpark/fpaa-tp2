@@ -43,19 +43,9 @@ public class DivisaoConquista {
  
         int meio = (esquerda + direita) / 2;
         
-        int somatorioEsquerda = maiorSomaDeTemperaturas(temperaturas, esquerda, meio-1);
-        int somatorioDireita = maiorSomaDeTemperaturas(temperaturas, meio+1, direita);
-        int somatorioMeio = periodoComMaiorSoma(temperaturas, esquerda, meio, direita);
-
-        if(somatorioMeio > somatorioEsquerda + somatorioDireita) {
-            System.out.println("A metade do ano teve uma elevação maior de temperatura com somatória de: " + somatorioMeio);
-            return somatorioMeio;
-        } else if(somatorioEsquerda > somatorioDireita) {
-            System.out.println("A primeira metade do ano teve uma elevação maior de temperatura com somatória de: " + somatorioEsquerda);
-            return somatorioEsquerda;
-        } else {
-            System.out.println("A segunda metade do ano teve uma elevação maior de temperatura com somatória de: " + somatorioDireita);
-            return somatorioDireita;
-        }
+        return Math.max(
+            Math.max(maiorSomaDeTemperaturas(temperaturas, esquerda, meio-1),
+                     maiorSomaDeTemperaturas(temperaturas, meio + 1, direita)),
+                     periodoComMaiorSoma(temperaturas, esquerda, meio, direita));
     }
 }
