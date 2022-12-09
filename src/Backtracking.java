@@ -1,27 +1,50 @@
+import java.util.LinkedList;
+import java.util.List;
+
 public class Backtracking {
 
-    int res = Integer.MAX_VALUE;
+    double res = Integer.MAX_VALUE;
+    Caminhao maxCaminhao = new Caminhao();
+    LinkedList<Caminhao> caminhoesResposta;
 
-    public int distribuirRotas(int[] rotas, int quantCaminhoes) {
+    public List<Caminhao> backtracking(List<Rota> rotas, int quantCaminhoes) {
+        System.out.println("\nBACKTRACKING");
         long inicio = System.currentTimeMillis();
-        backtracking(rotas, 0, quantCaminhoes, new int[quantCaminhoes]);
+        LinkedList<Caminhao> caminhoes = Helper.novaListaCaminhoes(quantCaminhoes);
+        caminhoesResposta = Helper.novaListaCaminhoes(quantCaminhoes);
+        backtracking(rotas, 0, quantCaminhoes, caminhoes);
         long diferenca = System.currentTimeMillis() - inicio;
         System.out.println("Tempo backtracking: " + diferenca);
-        return res;
+        System.out.println("Caminhão máximo:");
+        System.out.println(maxCaminhao.toString());
+        System.out.println("Resultado encontrado: " + maxCaminhao.getSoma());
+        return caminhoesResposta;
     }
 
-    private void backtracking(int[] rotas, int quant, int totalCaminhoes, int[] caminhoes) {
-        if (quant == rotas.length) {
-            int max = 0;
-            for (int caminhao : caminhoes)
-                max = Math.max(max, caminhao);
-            res = Math.min(res, max);
+    private void backtracking(List<Rota> rotas, int quant, int totalCaminhoes, LinkedList<Caminhao> caminhoes) {
+        if (quant == rotas.size()) {
+            double max = 0;
+            for (Caminhao caminhao : caminhoes) {
+                max = Math.max(max, caminhao.getSoma());
+                if (max >= res)
+                    break;
+            }
+            if (max < res) {
+                caminhoesResposta = Helper.novaListaCaminhoes(totalCaminhoes);
+                for (int i = 0; i < totalCaminhoes; i++) {
+                    for (Rota rota : caminhoes.get(i).rotas) {
+                        caminhoesResposta.get(i).rotas.add(rota);
+                    }
+                }
+                maxCaminhao = caminhoesResposta.stream().max((c1, c2) -> c1.compareTo(c2)).get();
+                res = max;
+            }
             return;
         }
         for (int i = 0; i < totalCaminhoes; i++) {
-            caminhoes[i] += rotas[quant];
+            caminhoes.get(i).rotas.add(rotas.get(quant));
             backtracking(rotas, quant + 1, totalCaminhoes, caminhoes);
-            caminhoes[i] -= rotas[quant];
+            caminhoes.get(i).rotas.remove(rotas.get(quant));
         }
     }
 

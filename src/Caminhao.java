@@ -16,4 +16,14 @@ public class Caminhao implements Comparable<Caminhao> {
     public int compareTo(Caminhao c) {
         return (int) ((this.getSoma() - c.getSoma()) * 100);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (Rota rota : rotas) {
+            str.append(rota.getId() + " - " + rota.getComprimento() + "\n");
+        }
+        str.append("Soma: " + getSoma());
+        return str.toString();
+    }
 }
