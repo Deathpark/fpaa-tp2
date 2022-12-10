@@ -42,6 +42,8 @@ public class App {
         ArquivoLeitura arquivo = new ArquivoLeitura(NOME_ARQ_TEMP);
 
         LinkedList<LinkedList<Integer>> temperaturas = new LinkedList<>();
+        LinkedList<Integer> todasTemperaturas = new LinkedList<>();
+
         String linha = arquivo.lerLinha();
         while (linha != null) {
             LinkedList<Integer> temp = new LinkedList<>();
@@ -68,6 +70,18 @@ public class App {
 
             int resultado = divisaoConquista.maiorSomaDeTemperaturas(listaDiferencas, 0, listaDiferencas.size() - 1);
             System.out.println("Período que somou: " + resultado + " graus.");
+            todasTemperaturas.addAll(temperaturaAnual);
         });
+
+        LinkedList<Integer> listaTodasDiferencas = new LinkedList<>();
+        for(int i = 0; i < (todasTemperaturas.size()-1); i++) {
+            listaTodasDiferencas.add(todasTemperaturas.get(i+1) - todasTemperaturas.get(i));
+        }
+
+        DivisaoConquista divisaoConquista = new DivisaoConquista(listaTodasDiferencas);
+
+        int resultado = divisaoConquista.maiorSomaDeTemperaturas(listaTodasDiferencas, 0, listaTodasDiferencas.size()-1);
+        System.out.println("Comparação dos 5 anos em conjunto:");
+        System.out.println("Período que somou: " + resultado + " graus.");
     }
 }
